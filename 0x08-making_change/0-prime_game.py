@@ -1,38 +1,44 @@
 #!/usr/bin/python3
-"""
-Interview_Question_on:_fewest_number_of_coins_needed_to
-meet_a_given_amount_total
-"""
+"""docum"""
 
-from __future__ import print_function
-import sys
+def isWinner(x, nums):
+    def is_prime(num):
+        if num < 2:
+            return False
+        for i in range(2, int(num**0.5) + 1):
+            if num % i == 0:
+                return False
+        return True
 
-def makeChange(coins, total):
-    """ fewest_number_of_coins_needed_t_meet_total """
-    if total <= 0:
-        return 0
-    # sort_the_coins _n_ descending_order
-    coins.sort(reverse=True)
-    change = 0
-    for coin in coins:
-        if total <= 0:
-            break
-        temp = total // coin
-        change += temp
-        total -= (temp * coin)
-    if total != 0:
-        return -1
-    return change
+    def get_primes(n):
+        primes = []
+        for i in range(2, n + 1):
+            if is_prime(i):
+                primes.append(i)
+        return primes
 
-def main():
-    coins = [25, 10, 5, 1]
-    total = 63
+    def can_win_round(primes, n):
+        if n % 2 == 0:
+            return "Ben"
+        else:
+            return "Maria"
 
-    result = makeChange(coins, total)
-    if result != -1:
-        print("{} coins needed to make a total of {}".format(result, total))
+    if x <= 0 or not nums:
+        return None
+
+    total_wins = {"Maria": 0, "Ben": 0}
+
+    for n in nums:
+        primes = get_primes(n)
+        round_winner = can_win_round(primes, n)
+        total_wins[round_winner] += 1
+
+    if total_wins["Maria"] > total_wins["Ben"]:
+        return "Maria"
+    elif total_wins["Maria"] < total_wins["Ben"]:
+        return "Ben"
     else:
-        print("It's not possible to make the total with the given coins.")
+        return None
 
 if __name__ == "__main__":
-    main()
+    print("Winner: {}".format(isWinner(5, [2, 5, 1, 4, 3])))
